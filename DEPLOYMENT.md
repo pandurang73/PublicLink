@@ -34,7 +34,7 @@ This guide outlines the steps to deploy the Civic Connect application.
 ## Frontend Deployment (e.g., Vercel, Netlify)
 
 1.  **Environment Variables**:
-    - `VITE_API_URL`: The URL of your deployed backend (e.g., `https://api.civicconnect.com`).
+    - `VITE_API_URL`: The URL of your deployed backend (e.g., `https://api.publiclink.com`).
 
 2.  **Build Command**:
     ```bash

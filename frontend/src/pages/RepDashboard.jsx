@@ -167,7 +167,7 @@ const RepDashboard = () => {
         // Title
         doc.setFontSize(20);
         doc.setTextColor(59, 130, 246);
-        doc.text('CivicConnect - Taluka Report', 105, 20, { align: 'center' });
+        doc.text('PublicLink - Taluka Report', 105, 20, { align: 'center' });
 
         // Subtitle
         doc.setFontSize(12);

@@ -20,7 +20,7 @@ const LandingPage = () => {
                             <span className="block text-primary xl:inline">PublicLink</span>
                         </h1>
                         <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg mx-auto md:mx-0">
-                            CivicConnect bridges the gap between citizens and authorities. Report issues instantly and track their resolution.
+                            PublicLink bridges the gap between citizens and authorities. Report issues instantly and track their resolution.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
                             <Link to="/report-issue" className="bg-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center justify-center">

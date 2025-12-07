@@ -30,7 +30,7 @@ const About = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed"
                     >
-                        CivicConnect is more than just a platform; it's a movement towards transparent, efficient, and collaborative governance. We bridge the gap between the people and the administration.
+                        PublicLink is more than just a platform; it's a movement towards transparent, efficient, and collaborative governance. We bridge the gap between the people and the administration.
                     </motion.p>
                 </div>
             </section>
@@ -161,7 +161,7 @@ const About = () => {
                         transition={{ delay: 0.4 }}
                     >
                         <a href="/signup" className="inline-block bg-white text-blue-600 font-bold py-4 px-10 rounded-full shadow-lg hover:bg-blue-50 transition transform hover:scale-105">
-                            Join CivicConnect Today
+                            Join PublicLink Today
                         </a>
                     </motion.div>
                 </div>
