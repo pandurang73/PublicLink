@@ -33,7 +33,7 @@ const Navbar = () => {
             const token = localStorage.getItem('token');
             if (!token) return;
 
-            const response = await fetch(`${config.API_BASE_URL} /api/issues / notifications / `, {
+            const response = await fetch(`${config.API_BASE_URL}/api/issues/notifications/`, {
                 headers: { 'Authorization': `Token ${token} ` }
             });
             if (response.ok) {

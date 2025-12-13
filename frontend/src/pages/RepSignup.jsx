@@ -37,6 +37,11 @@ const RepSignup = () => {
             return;
         }
 
+        // Parse fullName into first_name and last_name
+        const nameParts = formData.fullName.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
         try {
             const response = await fetch(`${config.API_BASE_URL}/api/users/register/`, {
                 method: 'POST',
@@ -45,7 +50,10 @@ const RepSignup = () => {
                     username: formData.email.split('@')[0],
                     email: formData.email,
                     password: formData.password,
+                    first_name: firstName,
+                    last_name: lastName,
                     is_representative: true,
+                    phone: formData.phone,
                     state: formData.state,
                     district: formData.district,
                     taluka: formData.taluka,
@@ -59,7 +67,15 @@ const RepSignup = () => {
             if (response.ok) {
                 navigate('/rep-login');
             } else {
-                setError(JSON.stringify(data));
+                // Display detailed error messages from backend
+                if (typeof data === 'object') {
+                    const errorMessages = Object.entries(data)
+                        .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+                        .join('\n');
+                    setError(errorMessages);
+                } else {
+                    setError(JSON.stringify(data));
+                }
             }
         } catch (err) {
             setError('Registration failed. Please try again.');
@@ -95,7 +111,7 @@ const RepSignup = () => {
             >
                 <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border-t-4 border-primary">
                     {error && (
-                        <div className="bg-red-50 text-red-500 p-3 rounded mb-4 text-sm">
+                        <div className="bg-red-50 text-red-500 p-3 rounded mb-4 text-sm whitespace-pre-wrap">
                             {error}
                         </div>
                     )}

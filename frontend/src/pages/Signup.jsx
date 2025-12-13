@@ -35,6 +35,11 @@ const Signup = () => {
             return;
         }
 
+        // Parse fullName into first_name and last_name
+        const nameParts = formData.fullName.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
         try {
             const response = await fetch(`${config.API_BASE_URL}/api/users/register/`, {
                 method: 'POST',
@@ -43,6 +48,8 @@ const Signup = () => {
                     username: formData.email.split('@')[0], // Use email prefix as username for now
                     email: formData.email,
                     password: formData.password,
+                    first_name: firstName,
+                    last_name: lastName,
                     phone: formData.phone,
                     state: formData.state,
                     district: formData.district,
@@ -55,7 +62,15 @@ const Signup = () => {
             if (response.ok) {
                 navigate('/login');
             } else {
-                setError(JSON.stringify(data));
+                // Display detailed error messages from backend
+                if (typeof data === 'object') {
+                    const errorMessages = Object.entries(data)
+                        .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+                        .join('\n');
+                    setError(errorMessages);
+                } else {
+                    setError(JSON.stringify(data));
+                }
             }
         } catch (err) {
             setError('Signup failed. Please try again.');
@@ -91,7 +106,7 @@ const Signup = () => {
             >
                 <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-gray-100">
                     {error && (
-                        <div className="bg-red-50 text-red-500 p-3 rounded mb-4 text-sm">
+                        <div className="bg-red-50 text-red-500 p-3 rounded mb-4 text-sm whitespace-pre-wrap">
                             {error}
                         </div>
                     )}

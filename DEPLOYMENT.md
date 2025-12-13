@@ -8,53 +8,61 @@ This guide outlines the steps to deploy the Civic Connect application.
 - PostgreSQL (Recommended for production, though MongoDB is currently configured)
 - Git
 
-## Backend Deployment (e.g., Render, Railway, Heroku)
+## 1. Backend Deployment (Render.com)
 
-1.  **Environment Variables**: Set the following environment variables on your hosting provider:
-    - `SECRET_KEY`: A strong random string.
-    - `DEBUG`: `False`
-    - `ALLOWED_HOSTS`: Your production domain (e.g., `api.publiclink.com`).
-    - `CORS_ALLOWED_ORIGINS`: Your frontend domain (e.g., `https://publiclink.com`).
-    - `MONGO_URI`: Connection string for your MongoDB database.
-    - `MONGO_DB_NAME`: Database name.
+Render is a great choice for hosting Python/Django apps.
 
-2.  **Build Command**:
-    ```bash
-    pip install -r backend/requirements.txt
-    python backend/manage.py collectstatic --noinput
-    python backend/manage.py migrate
-    ```
+1.  **Create Account**: Go to [dashboard.render.com](https://dashboard.render.com/) and log in with GitHub.
+2.  **New Web Service**: Click **New +** -> **Web Service**.
+3.  **Connect Repo**: Select your `PublicLink` repository.
+4.  **Configuration**:
+    -   **Name**: `publiclink-backend` (or similar)
+    -   **Region**: Closest to you (e.g., Singapore or Frankfurt)
+    -   **Branch**: `main`
+    -   **Root Directory**: `backend` (Important!)
+    -   **Runtime**: `Python 3`
+    -   **Build Command**:
+        ```bash
+        pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+        ```
+    -   **Start Command**:
+        ```bash
+        gunicorn civic_connect.wsgi
+        ```
+5.  **Environment Variables** (Click "Advanced" or "Environment"):
+    Add the following keys and values:
+    -   `PYTHON_VERSION`: `3.10.0` (or `3.12.0`)
+    -   `SECRET_KEY`: (Generate a random string)
+    -   `DEBUG`: `False`
+    -   `ALLOWED_HOSTS`: `*` (For now, or use your Render URL e.g., `publiclink-backend.onrender.com`)
+    -   `CORS_ALLOWED_ORIGINS`: `*` (You will update this after deploying the frontend. **IMPORTANT: Do not add a trailing slash!** e.g., `https://publiclink.vercel.app`)
+    -   `MONGO_URI`: `your_mongodb_connection_string` (e.g., from MongoDB Atlas)
+    -   `MONGO_DB_NAME`: `publiclink_db`
 
-3.  **Start Command**:
-    ```bash
-    gunicorn civic_connect.wsgi
-    ```
-    *Note: Ensure the root directory for the command is `backend/` or adjust the path accordingly.*
+6.  **Deploy**: Click **Create Web Service**. Wait for the build to finish.
+7.  **Copy URL**: Once deployed, copy the backend URL (e.g., `https://publiclink-backend.onrender.com`).
 
-## Frontend Deployment (e.g., Vercel, Netlify)
+---
 
-1.  **Environment Variables**:
-    - `VITE_API_URL`: The URL of your deployed backend (e.g., `https://api.publiclink.com`).
+## 2. Frontend Deployment (Vercel)
 
-2.  **Build Command**:
-    ```bash
-    cd frontend
-    npm install
-    npm run build
-    ```
+Vercel is optimized for Vite/React apps.
 
-3.  **Output Directory**: `frontend/dist`
-
-## Local Production Test
-
-To test the production setup locally:
-
-1.  **Backend**:
-    - Ensure `.env` has `DEBUG=False`.
-    - Run `python manage.py collectstatic`.
-    - Run `gunicorn civic_connect.wsgi`.
-
-2.  **Frontend**:
-    - Create `.env.production` in `frontend/` with `VITE_API_URL=http://localhost:8000`.
-    - Run `npm run build`.
-    - Serve the `dist` folder using `serve -s dist`.
+1.  **Create Account**: Go to [vercel.com](https://vercel.com/) and log in with GitHub.
+2.  **New Project**: Click **Add New...** -> **Project**.
+3.  **Import Repo**: Import your `PublicLink` repository.
+4.  **Configuration**:
+    -   **Framework Preset**: `Vite` (Should detect automatically)
+    -   **Root Directory**: Click `Edit` and select `frontend`.
+5.  **Build & Output Settings**:
+    -   **Build Command**: `npm run build` (Default)
+    -   **Output Directory**: `dist` (Default)
+6.  **Environment Variables**:
+    -   `VITE_API_URL`: Paste your **Render Backend URL** here (e.g., `https://publiclink-backend.onrender.com`).
+        *Note: Do not add a trailing slash `/`.*
+7.  **Deploy**: Click **Deploy**.
+8.  **Finalize**:
+    -   Once deployed, copy your new Frontend URL (e.g., `https://publiclink.vercel.app`).
+    -   **Go back to Render Dashboard** -> Environment Variables.
+    -   Update `CORS_ALLOWED_ORIGINS` to your Vercel URL (e.g., `https://publiclink.vercel.app`). **Ensure there is NO trailing slash `/` at the end.**
+    -   Update `ALLOWED_HOSTS` to include your Render URL if you set it to `*` earlier.

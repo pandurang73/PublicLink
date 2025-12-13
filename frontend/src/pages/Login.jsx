@@ -18,7 +18,7 @@ const Login = () => {
             const response = await fetch(`${config.API_BASE_URL}/api/users/login/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: email.split('@')[0], password }), // Using email prefix as username
+                body: JSON.stringify({ username: email, password }), // Using email as username
             });
             const data = await response.json();
             if (response.ok) {

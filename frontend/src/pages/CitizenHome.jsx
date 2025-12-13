@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { PlusCircle, MapPin, Clock, CheckCircle } from 'lucide-react';
+import { PlusCircle, MapPin, Clock, CheckCircle, List, Search, User } from 'lucide-react';
 import config from '../config';
 
 const CitizenHome = () => {

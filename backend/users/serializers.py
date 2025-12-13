@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'is_representative', 'department', 'gov_id', 'phone', 'state', 'district', 'taluka', 'village', 'pincode')
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'is_representative', 'department', 'gov_id', 'phone', 'state', 'district', 'taluka', 'village', 'pincode', 'representative_level')
 
     def validate_password(self, value):
         # Regex: At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
@@ -23,6 +23,8 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data.get('email', ''),
             password=validated_data['password'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
             is_representative=validated_data.get('is_representative', False),
             department=validated_data.get('department', ''),
             gov_id=validated_data.get('gov_id', ''),
@@ -31,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             district=validated_data.get('district', ''),
             taluka=validated_data.get('taluka', ''),
             village=validated_data.get('village', ''),
-            pincode=validated_data.get('pincode', '')
+            pincode=validated_data.get('pincode', ''),
+            representative_level=validated_data.get('representative_level', 'TALUKA')
         )
         return user
